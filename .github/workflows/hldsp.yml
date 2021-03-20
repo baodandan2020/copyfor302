@@ -1,40 +1,38 @@
-name: hldsp
-
+name: 哈啰
 
 on:
   workflow_dispatch:
   schedule:
-     - cron: '*/20 1-13 * * *'
-  watch:
-    types: started
+    - cron: '5 0-15 * * *'
+  repository_dispatch:
+      types: hello
 jobs:
   build:
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     env:
         HLDSP_URL: ${{ secrets.HLDSP_URL }}
-        HLDSP_HD: ${{ secrets.HLDSP_HD }}       
+        HLDSP_HD: ${{ secrets.HLDSP_HD }}  
         TZ: Asia/shanghai
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
-        
-      - name: Use Node.js 12.x
+        run: |
+          git clone https://github.com/baodandan2020/copyfor302.git ~/copyfor302
+      - name: Use Node.js 14.x
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 14.x
       - name: npm install
         run: |
+          cd ~/copyfor302
           npm install
-      - name: '运行 【hldsp】'
-        if: env.HLDSP_HD
+          npm install cron
+          npm install request
+      - name: '运行 【1】'
         run: |
+          cd ~/copyfor302   
           node Task/hldsp.js
         env:
-          PUSH_KEY: ${{ secrets.PUSH_KEY }}
-          BARK_PUSH: ${{ secrets.BARK_PUSH }}
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
           TG_USER_ID: ${{ secrets.TG_USER_ID }}
-          BARK_SOUND: ${{ secrets.BARK_SOUND }}
-          DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
           DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
