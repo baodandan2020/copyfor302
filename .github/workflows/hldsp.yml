@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     env:
-        HLDSP_URL: ${{ secrets.HLDSPURL }}
-        HLDSP_HD: ${{ secrets.HLDSPHD }}       
+        HLDSP_URL: ${{ secrets.HLDSP_URL }}
+        HLDSP_HD: ${{ secrets.HLDSP_HD }}       
         TZ: Asia/shanghai
     steps:
       - name: Checkout
@@ -27,7 +27,7 @@ jobs:
         run: |
           npm install
       - name: '运行 【hldsp】'
-        if: env.HLDSPHD
+        if: env.HLDSP_HD
         run: |
           node Task/hldsp.js
         env:
