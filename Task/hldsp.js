@@ -1,29 +1,51 @@
-﻿/*
+/*
 软件名称:哈喽短视频 微信小程序
 更新时间：2021-03-09 @肥皂
 脚本说明：哈喽短视频
 脚本为自动签到和领取视频红包
+
 小程序二维码地址 https://raw.githubusercontent.com/age174/-/main/DCB00CEE-FFFF-427B-B7ED-7381DE584860.jpeg
+
 本脚本以学习为主！
 使用方法:
 打开哈喽短视频小程序，点击我的或者任务获取数据
+
 TG电报群: https://t.me/hahaha802
+
 boxjs地址 :  
+
 https://raw.githubusercontent.com/age174/-/main/feizao.box.json
+
+
 哈喽短视频
 圈X配置如下，其他软件自行测试，定时可以多设置几次，没任务会停止运行的
 [task_local]
 #哈喽短视频
 15 13 * * * https://raw.githubusercontent.com/age174/-/main/hldsp.js, tag=哈喽短视频, img-url=https://ae01.alicdn.com/kf/Uda8ecbbe50444fe293b538cbccf9d719q.jpg, enabled=true
+
+
 [rewrite_local]
 #哈喽短视频
 https://vip.75787.com/app/index.php url script-request-header https://raw.githubusercontent.com/age174/-/main/hldsp.js
+
+
+
 #loon
 https://vip.75787.com/app/index.php script-path=https://raw.githubusercontent.com/age174/-/main/hldsp.js, requires-header=true, timeout=10, tag=哈喽短视频
+
+
+
 #surge
+
 哈喽短视频 = type=http-request,pattern=https://vip.75787.com/app/index.php,requires-header=1,max-size=0,script-path=https://raw.githubusercontent.com/age174/-/main/hldsp.js,script-update-interval=0
+
+
+
+
 [MITM]
 hostname = vip.75787.com
+
+
 */
 
 
@@ -38,52 +60,12 @@ let hlsign = '',hluid = ''
   if (typeof $request !== "undefined") {
     await hldspck()
    
-  } else {
- if ($.isNode()) {
-  COOKIES_SPLIT = process.env.COOKIES_SPLIT || "\n";
-  console.log(
-    `============ cookies分隔符为：${JSON.stringify(
-      COOKIES_SPLIT
-    )} =============\n`
-  );
-if (
-    process.env.HLDSPURL &&
-    process.env.HLDSPURL.indexOf(COOKIES_SPLIT) > -1
-  ) {
-    hldspurl = process.env.HLDSPURL.split(COOKIES_SPLIT);
-  } else {
-    hldspurl = process.env.HLDSPURL.split();
-  }
-  if (
-    process.env.HLDSPHD &&
-    process.env.HLDSPHD.indexOf(COOKIES_SPLIT) > -1
-  ) {
-    hldsphd = process.env.HLDSPHD.split(COOKIES_SPLIT);
-  } else {
-    hldsphd = process.env.HLDSPHD.split();
-  }
-
-	
-  Object.keys(hldspurl).forEach((item) => {
-        if (hldspurl[item]) {
-          hldspurlArr.push(hldspurl[item])
-        }
-    });
-    Object.keys(hldsphd).forEach((item) => {
-        if (hldsphd[item]) {
-          hldsphdArr.push(hldsphd[item])
-        }
-    });
-
-  	
-  } else {
-    hldspurlArr.push($.getdata('hldspurl'))
+  } else {hldspurlArr.push($.getdata('hldspurl'))
     hldsphdArr.push($.getdata('hldsphd'))
     let hldspcount = ($.getval('hldspcount') || '1');
   for (let i = 2; i <= hldspcount; i++) {
     hldspurlArr.push($.getdata(`hldspurl${i}`))
     hldsphdArr.push($.getdata(`hldsphd${i}`))
-  }
   }
     console.log(`------------- 共${hldsphdArr.length}个账号-------------\n`)
       for (let i = 0; i < hldsphdArr.length; i++) {
@@ -93,10 +75,8 @@ if (
           hldsphd = hldsphdArr[i];
           $.index = i + 1;
           console.log(`\n开始【哈喽短视频${$.index}】`)
-	//await hldsphhb();
-          await hldspqd();
-	  await $.wait(2000);  
-	  await hldspsp();
+          //await hldsphhb();
+            await hldspqd();
             
   }
 }}
@@ -132,7 +112,7 @@ let url = {
            
     const result = JSON.parse(data)
         if(result.data !== 0){
-        console.log('\n哈喽短视频[领取视频红包]回执:成功🌝 \n获得视频奖励: '+result.data+'，等待20秒继续领取')
+        console.log('\n哈喽短视频[领取视频红包]回执:成功🌝 \n获得视频奖励: '+result.data+'等待20秒继续领取')
            await $.wait(20000);
            await hldspsp();
        
@@ -157,7 +137,7 @@ console.log('\n哈喽短视频[领取视频红包]回执:失败🚫')
 function hldspqd(timeout = 0) {
   return new Promise((resolve) => {
     setTimeout( ()=>{
-      if (typeof hldsphd === "undefined") {
+      if (typeof $.getdata('hldsphd') === "undefined") {
         $.msg($.name,"",'请先获取哈喽短视频数据!😓',)
         $.done()
       }
@@ -178,11 +158,11 @@ let url = {
         console.log('\n哈喽短视频[签到]回执:成功🌝  \n获得金币:'+result.data.price)
      //$.done()
        await $.wait(2000);
-       //await hldsprw();
+        await hldspsp();
         
 } else {
 console.log('哈喽短视频[签到]回执:失败🚫 '+result.message)
-     //await hldspsp();
+     await hldspsp();
 }
         } catch (e) {
           //$.logErr(e, resp);
