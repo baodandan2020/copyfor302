@@ -33,7 +33,7 @@ jobs:
       - name: npm install
         run: |
           cd ~/copyfor302
-          git checkout age--174
+          git checkout age174--
           npm install
       - name: '运行 【哈喽短视频】'
         run: |
