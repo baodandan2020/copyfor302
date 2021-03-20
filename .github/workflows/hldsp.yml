@@ -38,7 +38,7 @@ jobs:
       - name: '运行 【哈喽短视频】'
         run: |
           cd ~/copyfor302
-          node Task/hldsp.js
+          node hldsp.js
         env:
           TZ: Asia/shanghai
           HLDSPURL: ${{ secrets.HLDSPURL }}
