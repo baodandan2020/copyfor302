@@ -1,29 +1,30 @@
-name: hldsp@Feizao
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different @versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-#github-actions
+
+name: 芝嫲视频
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '20 5,18 * * *'
-  # 本地时间+8
+    - cron: '0 * * * *' # UTC时间 +8 北京
   watch:
     types: started
   repository_dispatch:
-    types: hldsp
+    types: started
 jobs:
   build:
-
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-       
+        run: |
+          git clone https://github.com/baodandan2020/copyfor302.git ~/copyfor302
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
       - name: Cache node_modules
-        uses: actions/cache@v2 # 使用 GitHub 官方缓存 Action。
+        uses: actions/cache@v2 # 使用 GitHub 官方的缓存 Action。
         env:
           cache-name: cache-node-modules
         with:
@@ -31,11 +32,15 @@ jobs:
           key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }} # 使用 package-lock.json 的 Hash 作为缓存的 key。也可以使用 package.json 代替
       - name: npm install
         run: |
+          cd ~/copyfor302
+          git checkout age--174
           npm install
       - name: '运行 【哈喽短视频】'
         run: |
+          cd ~/copyfor302
           node Task/hldsp.js
         env:
+          TZ: Asia/shanghai
           HLDSPURL: ${{ secrets.HLDSPURL }}
           HLDSPHD: ${{ secrets.HLDSPHD }}
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
