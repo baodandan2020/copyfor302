@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     env:
-        HLDSP_URL: ${{ secrets.HLDSP_URL }}
-        HLDSP_HD: ${{ secrets.HLDSP_HD }}       
+        HLDSPURL: ${{ secrets.HLDSPURL }}
+        HLDSPHD: ${{ secrets.HLDSPHD }}       
         TZ: Asia/shanghai
     steps:
       - name: Checkout
