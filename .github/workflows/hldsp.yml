@@ -37,7 +37,7 @@ jobs:
           npm install
       - name: '运行 【哈喽短视频】'
         run: |
-          node hldsp.js
+          node Task/hldsp.js
         env:
           HLDSPURL: ${{ secrets.HLDSPURL }}
           HLDSPHD: ${{ secrets.HLDSPHD }}
