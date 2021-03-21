@@ -1,16 +1,13 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
 name: 哈喽短视频
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '23 1 * * *'
+    - cron: '20 1,7,12 * * *'
   watch:
     types: started
   repository_dispatch:
-    types: hldsp
+    types: hlpsp
 jobs:
   build:
 
@@ -19,8 +16,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        #with:
-          #repository: age174--/hldsp
+       
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -31,7 +27,7 @@ jobs:
           cache-name: cache-node-modules
         with:
           path: node_modules
-          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }} # 使用 package-lock.json 的 Hash 作为缓存的 key。也可以使用 package.json 代替
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ secrets.KEY }} # 使用 package-lock.json 的 Hash 作为缓存的 key。也可以使用 package.json 代替
       - name: npm install
         run: |
           npm install
@@ -39,6 +35,7 @@ jobs:
         run: |
           node Task/hldsp.js
         env:
+          
           HLDSPURL: ${{ secrets.HLDSPURL }}
           HLDSPHD: ${{ secrets.HLDSPHD }}
           PUSH_KEY: ${{ secrets.PUSH_KEY }}
