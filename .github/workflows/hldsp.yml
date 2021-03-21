@@ -27,7 +27,7 @@ jobs:
         run: |
           npm install
       - name: '运行 【哈喽短视频】'
-        if: env.HLDSP_HD
+        if: env.HLDSPHD
         run: |
           node hldsp.js
         env:
